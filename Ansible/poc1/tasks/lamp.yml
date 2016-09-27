@@ -1,0 +1,29 @@
+---
+- name: 1. install Apache
+  apt: name=apache2 state=present
+
+- name: 2. install PHP module for Apache
+  apt: name={{item}} state=present
+  with_items:
+        - php5
+        - libapache2-mod-php5
+        - php5-mysql
+
+- name: 3. start Apache
+  service: name=apache2 state=running enabled=yes
+
+- name: Apache | remove symlink for default conf file
+  command: /bin/rm /etc/apache2/sites-enabled/000-default.conf
+  ignore_errors: True
+
+- name: Apache | remove apache default configuration file
+  command: /bin/rm /etc/apache2/sites-available/000-default.conf
+  ignore_errors: True
+
+- name: Copy the apache new default configuration file with virtualhost enabled 
+  copy: src=default.conf dest=/etc/apache2/sites-available/default.conf
+  
+- name: symlink
+  file: src=/etc/apache2/sites-available/default.conf dest=/etc/apache2/sites-enabled/default.conf owner=amol group=amol state=link
+  notify: 
+        - restart apache

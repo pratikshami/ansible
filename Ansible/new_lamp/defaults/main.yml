@@ -1,0 +1,13 @@
+# file: mysql/defaults/main.yml
+
+# Basic settings
+
+mysql_root_password: 'password'
+mysql_language: '/usr/share/mysql/'
+
+
+# List of databases to be created
+mysql_databases: [br]
+
+# List of users to be created
+mysql_users: [amol]

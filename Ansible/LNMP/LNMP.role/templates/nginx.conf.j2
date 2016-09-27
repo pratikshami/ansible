@@ -1,0 +1,43 @@
+#{{ ansible_managed }}
+{% if ansible_os_family == 'RedHat' %} 
+user              nginx;
+{% endif %}
+{% if ansible_os_family == 'Debian' %} 
+user              www-data;
+{% endif %}
+
+worker_processes  {{ ansible_processor_count }};
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  {{ nginx_max_clients }};
+}
+
+
+http {
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+	
+	upstream amol_apache_servers {
+ 		server 172.27.59.17:8090;
+		server 172.27.59.88:8000;
+	}        
+        server {
+		listen 80;
+		location / {
+			proxy_pass http://amol_apache_servers
+		}
+	}
+	
+{% for k,v in nginx_http_params.iteritems() %}
+        {{ k }}  {{ v }};
+{% endfor %}
+
+        gzip on;
+        gzip_disable "msie6";
+
+        include /etc/nginx/conf.d/*.conf;
+        include /etc/nginx/sites-enabled/*;
+}

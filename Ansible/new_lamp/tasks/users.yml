@@ -1,0 +1,6 @@
+# file: mysql/tasks/users.yml
+
+- name: MySQL | Make sure the MySQL users are present
+  mysql_user: name={{item}} password=password priv=*.*:ALL state=present host=localhost
+  with_items: mysql_users
+  when: mysql_users|length > 0

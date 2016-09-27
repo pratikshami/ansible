@@ -1,0 +1,35 @@
+---
+
+- name: 1. install nginx
+  apt: name=nginx state=present
+
+- name: 2. install PHP module dependancy for Nginx
+  apt: name={{item}} state=present
+  with_items:
+          - php5-cli
+          - php5-cgi
+          - psmisc
+          - spawn-fcgi
+          - php5-fpm
+          - php5-gd
+          - php-xml-parser
+          - php5-intl
+          - php5-curl
+ 
+
+- name: Copy the nginx default site configuration file 
+  template: src=default.j2 dest=/etc/nginx/sites-available/default
+  
+- name: rename nginx default site configuration file to desired webapp
+  command: /bin/mv /etc/nginx/sites-available/default /etc/nginx/sites-available/website1
+
+- name: remove symlonk for default
+  command: /bin/rm /etc/nginx/sites-available/default
+  notify: 
+        - restart nginx
+        - reload nginx
+
+- name: Install Mysql
+  apt: pkg=mysql-server state=latest
+
+

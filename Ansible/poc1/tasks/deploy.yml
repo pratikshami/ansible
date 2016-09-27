@@ -1,0 +1,6 @@
+---
+- name: Deploy PHP project
+  copy: src=/var/www/html/website1 dest=/var/www/html/
+
+- name: Make entry in host file
+  copy: src=hosts dest=/etc/hosts

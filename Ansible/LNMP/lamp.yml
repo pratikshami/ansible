@@ -1,0 +1,31 @@
+---
+- hosts: 172.16.235.128
+  sudo: yes
+  remote_user: amol
+  tasks:
+    - name: 1. install nginx
+      apt: name=apache2 state=present
+
+    - name: 2. install PHP module for Nginx
+      apt: name=php5-fpm state=present 
+      notify: 
+        - restart nginx
+        - reload nginx
+
+    - name: Copy the nginx default site configuration file 
+      template: src=default.j2 dest=/etc/nginx/sites-available/default
+
+    - name: rename nginx default site configuration file to desired webapp
+      command: /bin/mv /etc/nginx/sites-available/default /etc/nginx/sites-available/website1
+      notify: 
+        - restart nginx
+        - reload nginx
+
+    - name: Install Mysql
+      apt: pkg=mysql-server state=latest
+
+    - name: Mysql | Set root password
+      shell: debconf-set-selections <<< 'mysql-server mysql-server/root_password password amol'
+
+    - name: Mysql | Set root repassword
+      shell: debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password amol'

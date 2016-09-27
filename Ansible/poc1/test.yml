@@ -1,0 +1,9 @@
+- hosts: 172.27.59.17
+  sudo: yes
+  remote_user: cybage
+  vars_files:
+    - 'defaults/main.yml'
+  tasks:
+    - include: 'tasks/main.yml'
+  handlers:
+    - include: 'handlers/main.yml'

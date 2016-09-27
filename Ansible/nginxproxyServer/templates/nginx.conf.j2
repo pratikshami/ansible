@@ -1,0 +1,9 @@
+server {
+	listen 80;
+	server_name {{server}};
+
+	location ~ ^/ {
+		proxy_pass http://{{proxy}};
+		proxy_set_header Host $host;
+	}
+}

@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: Craig Mason-Jones
+  description: A role to configure a proxy on nginx
+  company: 
+  license: BSD
+  min_ansible_version: 1.2
+  platforms:
+  - name: Ubuntu
+    versions: [all]
+  categories: [web]
+  dependencies: []

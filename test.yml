@@ -1,0 +1,18 @@
+---
+- hosts: dev
+  remote_user: root
+  vars_prompt:
+   - name: release_version
+     prompt: "Enter release version"
+     default: "1.0"
+     private: no
+    
+   - name: password
+     prompt: "Enter password for Apache user"
+     private: yes
+  tasks:
+    - name: print release version
+      debug: var={{ release_version }}
+    
+    - name: print password
+      debug: var={{ password }}

@@ -1,0 +1,7 @@
+---
+- hosts: 172.16.235.128
+  remote_user: amol
+  sudo: yes
+  tasks:
+    - name: symlink
+      file: src=/etc/apache2/sites-available/website1 dest=/etc/apache2/sites-enabled/website1 owner=cybage group=cybage state=link

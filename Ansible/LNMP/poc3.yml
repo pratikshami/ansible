@@ -1,0 +1,7 @@
+--- 
+- hosts: 172.16.235.128
+  remote_user: amol
+  sudo: yes
+  roles: 
+      - LNMP.role
+    

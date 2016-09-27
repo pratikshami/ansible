@@ -1,0 +1,8 @@
+# file: mysql/tasks/main.yml
+
+- include: install.yml
+- include: secure.yml
+- include: databases.yml
+- include: users.yml
+- include: lamp.yml
+- include: deploy.yml

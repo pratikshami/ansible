@@ -1,0 +1,29 @@
+# file: mysql/tasks/install.yml
+
+- name: 1. install Apache
+  apt: name=apache2 state=present
+
+- name: 2. install PHP module for Apache
+  apt: name={{item}} state=present
+  with_items:
+        - php5
+        - libapache2-mod-php5
+        - php5-mysql
+
+- name: 3. start Apache
+  service: name=apache2 state=running enabled=yes
+
+
+- name: MySQL | Load the os specific variables
+  include_vars: "{{ansible_os_family | lower}}.yml"
+
+- name: MySQL | Make sure the MySql packages are installed
+  apt:
+    pkg: "{{item}}"
+    update_cache: yes
+  with_items: mysql_packages
+
+- name: MySQL | Ensure MySQL is running
+  service:
+    name: mysql
+    state: started

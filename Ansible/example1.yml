@@ -1,0 +1,14 @@
+---
+- hosts: dev
+  remote_user: root
+#  strategy: debug
+  tasks:
+  - name: ensure apache is at the latest version
+    apt: pkg=apache2 state=present force=yes
+    notify:
+    - restart apache
+  - name: ensure apache is running
+    service: name=apache2 state=started
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted

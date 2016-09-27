@@ -1,0 +1,19 @@
+# file: mysql/tasks/databases.yml
+
+- name: MySQL | Make sure the MySQL databases are present
+  mysql_db:
+    name: "{{ item}}"
+    state: present
+  with_items: mysql_databases
+  when: mysql_databases|length > 0
+
+- name: MySQL | copy sample database
+  copy: src=br.sql dest=/tmp/br.sql
+  
+- name: MySQL | insert sample data
+  mysql_db: name=br state=import target=/tmp/br.sql
+  
+#shell: cat /tmp/br.sql | mysql -u root -p br
+
+#mysql_db: name=my_db state=import target=/tmp/br.sql
+
